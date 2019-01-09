@@ -1,6 +1,5 @@
 class Test
   def initialize
-
     #храним текст вопроса и логику ответа
     #"false" - ответ юзера "Да" считаем отрицальным для степени коммуникабельности
     #"true" - ответ юзера "Да" считаем положительным для степени коммуникабельности
@@ -48,7 +47,7 @@ class Test
     #если логика ответа помечена как "true", то ответ "НЕТ", способствует увеличению итогового балла на 2
     #также как и ответ "Да" на вопрос с пометкой "false"
     #нейтральный ответ дает 1 балл
-        if @questions[@current_question][1] && user_answer == 0
+    if @questions[@current_question][1] && user_answer == 0
       @user_score += 2
     elsif !@questions[@current_question][1]  && user_answer == 1
       @user_score += 2
