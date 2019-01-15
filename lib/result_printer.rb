@@ -1,21 +1,15 @@
 class ResultPrinter
   def initialize(results_path)
     # Ответы
-    @results = self.load_answers(results_path)
-  end
-
-  def load_answers(file_path)
-    file = File.new(file_path, 'r:UTF-8')
-    answers = file.readlines
-    file.close
-
-    answers.map! do |line|
-      {
-          :text => /(["])(.+?)\1/.match(line)[2],
-          :min => /([\[])(.+?)([\]])/.match(line)[2].split('-')[0],
-          :max => /([\[])(.+?)([\]])/.match(line)[2].split('-')[1]
+    file = File.new(results_path, 'r:UTF-8')
+    @results = file.readlines
+    @results.map! do |line|
+      { :text => /(["])(.+?)\1/.match(line)[2],
+        :min => /([\[])(.+?)([\]])/.match(line)[2].split('-')[0].to_i,
+        :max => /([\[])(.+?)([\]])/.match(line)[2].split('-')[1].to_i
       }
     end
+    file.close
   end
 
   def print (test)
@@ -25,7 +19,7 @@ class ResultPrinter
     puts "Cуммарный балл: #{test.user_score}"
 
     @results.each do |i|
-      puts i[:text] if test.user_score.between?(i[:min].to_i,i[:max].to_i)
+      puts i[:text] if test.user_score.between?(i[:min],i[:max])
     end
   end
 end
