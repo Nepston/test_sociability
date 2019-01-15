@@ -1,14 +1,12 @@
 class Test
-  attr_reader :user_score
-
-  POSITIVE_POINT = 2
-  NEUTRAL_POINT = 1
-  #NEGATIVE_RESPONSE_POINT = 0
+  attr_reader :user_score, :points
 
   def initialize(questions_path)
     @questions = self.load_questions(questions_path)
     @user_score = 0
     @current_question = 0
+
+    @points = Hash.new { :positive => 2, :neutral => 1 }
   end
 
   def load_questions(file_path)
@@ -19,7 +17,10 @@ class Test
     #храним текст вопроса и логику ответа
     #"false" - ответ юзера "Да" считаем отрицальным для степени коммуникабельности
     #"true" - ответ юзера "Да" считаем положительным для степени коммуникабельности
-    questions.map! do { |line| Question.new(/(["])(.+?)\1/.match(line)[2], /([\(])(.+?)([\)])/.match(line)[2]) }
+    questions.map! do |line|
+      text = /(["])(.+?)\1/.match(line)[2]
+      logic = /([\(])(.+?)([\)])/.match(line)[2]
+      Question.new(text, logic)
     end
   end
 
@@ -30,14 +31,6 @@ class Test
 
   def finished?
     @current_question >= @questions.size
-  end
-
-  def positive_point
-    POSITIVE_POINT
-  end
-
-  def neutral_point
-    NEUTRAL_POINT
   end
 
   def get_user_answer
@@ -64,11 +57,11 @@ class Test
     #также как и ответ "Да" на вопрос с пометкой "false"
     #нейтральный ответ дает 1 балл
     if question.logic && user_answer == 0
-      @user_score += self.positive_point
+      @user_score += @points[:positive]
     elsif !question.logic  && user_answer == 1
-      @user_score += self.positive_point
+      @user_score += @points[:positive]
     elsif user_answer == 2
-      @user_score += self.neutral_point
+      @user_score += @points[:neutral]
     end
   end
 end
