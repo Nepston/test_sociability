@@ -1,8 +1,8 @@
-require_relative "test"
-require_relative "result_printer"
+require_relative "lib/test"
+require_relative "lib/result_printer"
 
-test = Test.new
-result_printer = ResultPrinter.new
+test = Test.new('./data/questions.txt')
+result_printer = ResultPrinter.new('./data/results.txt')
 
 # Основной цикл программы
 until test.finished?
@@ -11,5 +11,4 @@ until test.finished?
 end
 
 # Выводим результаты теста
-result_printer.print (test)
-
+result_printer.print(test)
