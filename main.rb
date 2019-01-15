@@ -1,5 +1,6 @@
 require_relative "lib/test"
 require_relative "lib/result_printer"
+require_relative "lib/question"
 
 test = Test.new('./data/questions.txt')
 result_printer = ResultPrinter.new('./data/results.txt')
